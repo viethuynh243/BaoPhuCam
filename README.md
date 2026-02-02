@@ -152,6 +152,78 @@ The following images show the step-by-step process and final results of the came
 ![Final Camera Placement - Optimized camera positions (red points) with coverage areas (blue points) and tree obstacles (green points). The system minimizes cameras while maximizing area coverage.](img/RESULT.png)
 ````
 
+### Detailed Image Analysis
+
+#### 1. Boundary Points Definition
+![Boundary Points](img/BOUNDARY POINTS.png)
+
+**What it shows:**
+- **Red points**: Define the perimeter of the surveillance area
+- **Master plan overlay**: Shows the Jackfruit Village layout with labeled zones
+- **Key areas identified**:
+  - Private residential areas
+  - Service areas (orange-marked zones)
+  - Meditation space and center yard
+  - Lake view areas
+  - Multiple entry/exit points
+
+**Purpose**: Establishes the geographical boundaries where camera coverage is required. The boundary points form a polygon that defines the total area to be monitored.
+
+---
+
+#### 2. Building Obstacles Mapping
+![Buildings Points](img/BUILDINGS POINTS.png)
+
+**What it shows:**
+- **Blue points**: Represent building structures and permanent obstacles
+- **Gray buildings**: Residential units, service buildings, and structures
+- **Green circles**: Tree positions (shown for context)
+- **Distribution pattern**: Buildings are strategically placed throughout the village
+
+**Purpose**: Maps all physical structures that will obstruct camera line-of-sight. The algorithm must account for these obstacles when calculating optimal camera positions to ensure no blind spots are created behind buildings.
+
+**Technical consideration**: Each building creates a "shadow zone" where cameras cannot see through, requiring strategic placement to cover areas behind obstacles.
+
+---
+
+#### 3. Tree Obstacles Identification
+![Trees Points](img/TREES POINTS.png)
+
+**What it shows:**
+- **Green points**: Individual tree locations throughout the area
+- **Coverage density**: Trees are distributed across the landscape
+- **Landscaping zones**: Higher tree density in meditation areas and along pathways
+
+**Purpose**: Identifies vegetation that may partially or fully obstruct camera views. Unlike buildings, trees may have seasonal variations in coverage (leaves) and varying heights.
+
+**Technical consideration**: Trees are treated as circular obstacles with defined radii. The system calculates whether camera line-of-sight passes through tree canopies.
+
+---
+
+#### 4. Final Optimized Camera Placement
+![Final Result](img/RESULT.png)
+
+**What it shows:**
+- **🔴 Red points**: Optimally placed camera positions
+- **🔵 Blue points**: Coverage area points (areas visible to cameras)
+- **🟢 Green points**: Tree obstacles (for reference)
+- **Gray areas**: Building structures
+- **Dashed lines**: Boundary perimeter
+
+**Results achieved:**
+- Strategic camera placement along perimeters and key junctions
+- Maximum coverage with minimum number of cameras
+- Coverage of all entry/exit points
+- Overlap zones for redundancy in critical areas
+- Clear sight lines avoiding major obstacles
+
+**Optimization strategy**: The algorithm places cameras to:
+1. Cover boundary perimeters first (security priority)
+2. Monitor all entry/exit points
+3. Provide overlapping coverage in high-traffic areas
+4. Minimize blind spots created by buildings and trees
+5. Ensure redundancy for critical zones
+
 ### Technical Visualization
 
 The system also generates grid-based technical visualizations for detailed analysis:
