@@ -142,15 +142,17 @@ The system has been successfully tested on a real-world scenario: the **Jackfrui
 
 The following images show the step-by-step process and final results of the camera placement optimization for a residential area called "Jackfruit Village".
 
-````carousel
+**Step 1: Boundary Points**
 ![Boundary Points - The master plan showing the area boundary (red points) where camera surveillance is needed. The area includes private areas, service areas, meditation spaces, and lake views.](img/BOUNDARY POINTS.png)
-<!-- slide -->
+
+**Step 2: Building Obstacles**
 ![Buildings Points - Building obstacles (blue points) mapped onto the master plan. These structures obstruct camera line-of-sight and must be considered in placement calculations.](img/BUILDINGS POINTS.png)
-<!-- slide -->
+
+**Step 3: Tree Obstacles**
 ![Trees Points - Tree obstacles (green points) identified throughout the area. Trees affect camera visibility and coverage zones.](img/TREES POINTS.png)
-<!-- slide -->
+
+**Step 4: Final Camera Placement**
 ![Final Camera Placement - Optimized camera positions (red points) with coverage areas (blue points) and tree obstacles (green points). The system minimizes cameras while maximizing area coverage.](img/RESULT.png)
-````
 
 ### Detailed Image Analysis
 
@@ -394,13 +396,15 @@ The system includes 7 iterative test scenarios (`test`, `test_2` through `test_7
 - Better integration of Bresenham line algorithm for line-of-sight
 
 **Test Visualizations**:
-````carousel
+
+**Initial State - No Cameras Placed**
 ![Test 3 Initial State - Red areas need coverage, green areas are obstacles](test_3/collision/after_0_cameras.png)
-<!-- slide -->
+
+**After 5 Cameras Placed**
 ![Test 3 After 5 Cameras - Coverage expanding with circular patterns](test_3/collision/after_5_cameras.png)
-<!-- slide -->
+
+**Distance Heat Map Analysis**
 ![Test 3 Distance Heat Map - Optimized camera spacing analysis](test_3/test_camera_distance.png)
-````
 
 **Subdirectories**:
 - `collision/` - 25 progressive images showing camera placement evolution (0-24 cameras)
@@ -464,11 +468,11 @@ The system includes 7 iterative test scenarios (`test`, `test_2` through `test_7
 
 **Purpose**: Final algorithm validation and production-ready implementation.
 
-````carousel
+**Test 6 - Final Validation**
 ![Test 6 Final Validation](test_6/test_camera_distance.png)
-<!-- slide -->
+
+**Test 7 - Production Ready**
 ![Test 7 Production Ready](test_7/test_camera_distance.png)
-````
 
 **Key Features**:
 - Complete algorithm validation
