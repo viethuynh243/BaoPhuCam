@@ -13,13 +13,12 @@ An advanced Python-based system that automatically determines optimal camera pos
 - [Overview](#overview)
 - [Key Features](#key-features)
 - [Quick Start](#quick-start)
-- [How It Works](#how-it-works)
-- [Algorithm Execution Process](#algorithm-execution-process)
 - [Installation](#installation)
 - [Usage Guide](#usage-guide)
+- [How It Works](#how-it-works)
 - [Input & Output](#input--output)
 - [Results & Visualization](#results--visualization)
-- [Technical Details](#technical-details)
+- [Algorithm Details](#algorithm-details)
 - [Project Structure](#project-structure)
 - [Test Suite](#test-suite)
 - [Contributing](#contributing)
@@ -48,7 +47,7 @@ The system has been successfully deployed for the **Jackfruit Village** resident
 - Maintaining optimal camera spacing
 - Prioritizing critical zones (flood plains, entry points)
 
-**Solution**: A 6-step iterative optimization algorithm that progressively refines camera positions based on coverage analysis, obstacle detection, and efficiency metrics.
+**Solution**: An iterative optimization algorithm that progressively refines camera positions based on coverage analysis, obstacle detection, and efficiency metrics.
 
 ---
 
@@ -68,9 +67,9 @@ The system has been successfully deployed for the **Jackfruit Village** resident
 
 - **Flood Plain Monitoring**: Prioritizes water surface visibility
 - **Boundary-Aware Placement**: Respects designated surveillance areas
-- **6-Step Iterative Refinement**: Progressive optimization process
+- **Iterative Refinement**: Progressive optimization process
 - **Configurable Parameters**: Adjustable camera range, scale, and grid resolution
-- **Visual Analytics**: Color-coded coverage maps and heat visualizations
+- **Visual Analytics**: Color-coded coverage maps and progressive visualizations
 - **Performance Optimized**: Numba JIT compilation for fast processing
 
 ---
@@ -98,159 +97,7 @@ cd BaoPhuCam
 python camera_placement.py
 ```
 
-**Output**: `cameraCheck_test_4.png` - Color-coded coverage visualization
-
----
-
-## 🔧 How It Works
-
-### Processing Pipeline
-
-```
-┌─────────────┐     ┌──────────────┐     ┌─────────────────┐
-│  CSV Input  │────▶│ Grid Convert │────▶│ Obstacle Mapping│
-└─────────────┘     └──────────────┘     └─────────────────┘
-                                                   │
-                                                   ▼
-┌─────────────┐     ┌──────────────┐     ┌─────────────────┐
-│Visualization│◀────│   Coverage   │◀────│Camera Placement │
-└─────────────┘     │  Calculation │     └─────────────────┘
-                    └──────────────┘
-```
-
-### Step-by-Step Process
-
-1. **Input Reading**: Load boundary, building, and tree coordinates from CSV files
-2. **Grid Creation**: Convert coordinates to grid-based representation (width × height)
-3. **Obstacle Mapping**: Mark buildings (hard blocks) and trees (soft blocks) on grid
-4. **Camera Loading**: Read pre-calculated camera positions
-5. **Coverage Calculation**: For each camera:
-   - Cast rays to all grid edges using Bresenham's algorithm
-   - Calculate acceptability score for each visible cell
-   - Account for obstacles and camera range
-6. **Acceptability Scoring**:
-   - `1.0` = Full coverage (clear line-of-sight within range)
-   - `0.5` = Partial coverage (tree obstruction or beyond range)
-   - `0.0` = No coverage (building obstruction or outside boundary)
-7. **Visualization**: Generate color-coded output image
-
----
-
-## 🔄 Algorithm Execution Process
-
-The system uses a **6-step progressive optimization** approach (Phương pháp 1-6) to refine camera placement:
-
-### Methods 1-2: Initial Placement
-
-![Methods 1-2: Initial Camera Placement](img/methods_1_2.png)
-
-#### 5.1) Phương pháp 1 (Method 1)
-**Initial camera placement with basic coverage**
-
-- **Objective**: Establish baseline camera layout
-- **Strategy**: Place cameras without strict observation constraints
-- **Result**: Initial coverage map with identified gaps
-- **Color Coding**:
-  - 🟢 Green: Areas that can be covered
-  - 🔵 Blue: Building obstacles (hard blocks)
-  - 🟤 Brown: Tree obstacles (soft blocks)
-  - 🔴 Red: Boundary perimeter
-
-**Vietnamese**: Kết quả này đạt được khi sử dụng lập đặt camera có các đặc quan sát, không yêu cầu đặt các camera quan sát ở mất nước.
-
-#### 5.2) Phương pháp 2 (Method 2)
-**Water surface visibility optimization**
-
-- **Objective**: Ensure flood plain monitoring
-- **Strategy**: Position cameras to observe water features and flood-prone areas
-- **Improvement**: Enhanced coverage for critical water zones
-- **Result**: Cameras positioned to monitor water surfaces
-
-**Vietnamese**: Kết quả đạt được khi thêm các thông tin về vị trí mặt nước trên lưu điểm. Xuất hiện thêm các camera ở vị trí xác định là mặt nước.
-
----
-
-### Methods 3-4: Coverage Optimization
-
-![Methods 3-4: Coverage Optimization](img/methods_3_4.png)
-
-#### 5.3) Phương pháp 3 (Method 3)
-**Green zone expansion**
-
-- **Objective**: Maximize visible coverage areas
-- **Strategy**: Optimize camera positions to expand green zones
-- **Key Feature**: Dynamic area expansion as cameras detect more regions
-- **Result**: Significantly increased coverage area
-- **Color Changes**:
-  - 🟢 Green zones expand
-  - 🟡 Yellow: New potential coverage areas
-
-**Vietnamese**: Tối ưu hóa vị trí đặt cam, tăng diện tích vùng xanh (vùng camera có thể phát hiện chuyển động).
-
-#### 5.4) Phương pháp 4 (Method 4)
-**Gap filling and blind spot elimination**
-
-- **Objective**: Eliminate coverage gaps
-- **Strategy**: Add cameras where existing cameras cannot observe
-- **Analysis**: Identify blind spots and deploy supplementary cameras
-- **Result**: Comprehensive area coverage with minimal gaps
-- **Color Coding**:
-  - 🟡 Yellow: Areas requiring additional cameras
-  - 🔵 Blue: Building obstacles
-  - 🔴 Red: Critical coverage gaps
-
-**Vietnamese**: Thêm yêu cầu các camera không sử dụng các gỗ để đặt camera nhà, các camera được lặp đặt trên các công trình nhà.
-
----
-
-### Methods 5-6: Final Refinement
-
-![Methods 5-6: Final Optimization](img/methods_5_6.png)
-
-#### 5.5) Phương pháp 5 (Method 5)
-**Border translation and position optimization**
-
-- **Objective**: Find optimal camera positions along boundaries
-- **Strategy**: Translate cameras along border edges to determine best angles
-- **Analysis**: Calculate coverage efficiency at different positions
-- **Decision Making**: Select positions that maximize coverage while minimizing camera count
-- **Result**: Cameras positioned at optimal boundary locations
-- **Color Coding**:
-  - 🟡 Yellow: Border zones being analyzed
-  - 🟢 Green: Optimized coverage areas
-
-**Vietnamese**: Dịch chuyển các camera theo biên (ở đây xác định là xung quanh các vật thể công trình). Dùng quét giảm tìm đa vùng đỏ (vùng camera không quan sát được).
-
-#### 5.6) Phương pháp 6 (Method 6)
-**Redundancy removal and final validation**
-
-- **Objective**: Minimize camera count while maintaining coverage
-- **Strategy**: Calculate spacing between cameras and remove redundant installations
-- **Optimization**: Remove cameras that are too close or provide overlapping coverage
-- **Final Check**: Validate that all critical areas remain covered after removal
-- **Result**: Minimal camera count with maximum efficiency
-
-**Vietnamese**: Từ các vị trí không cách đặt camera, tính toán loại bỏ các vị trí camera bị lặp đặt gần nhau.
-
----
-
-### Algorithm Performance Metrics
-
-| Step | Method | Coverage Gain | Camera Efficiency | Blind Spots |
-|------|--------|---------------|-------------------|-------------|
-| 1 | Initial Placement | Baseline (60%) | Baseline | Many |
-| 2 | Water Monitoring | +20% | +10% | Many |
-| 3 | Zone Expansion | +30% | +15% | Moderate |
-| 4 | Gap Filling | +15% | +5% | Few |
-| 5 | Border Optimization | +10% | +25% | Minimal |
-| 6 | Redundancy Removal | 0% | +40% | Minimal |
-| **Final** | **Total** | **~92%** | **+95%** | **<5%** |
-
-**Progressive Improvement**:
-- 📈 Coverage: 60% → 92% (+32%)
-- ⚡ Efficiency: Baseline → +95% improvement
-- 🎯 Blind Spots: Many → <5% of area
-- 💰 Cost Optimization: 15% reduction in camera count
+**Output**: `cameraCheck_test_4.png` - Color-coded coverage visualization with 25 cameras
 
 ---
 
@@ -283,7 +130,7 @@ git clone https://github.com/viethuynh243/BaoPhuCam.git
 cd BaoPhuCam
 
 # 2. Install dependencies
-pip install -r requirements.txt
+pip install numpy pillow scipy pandas matplotlib numba
 
 # 3. Verify installation
 python -c "import numpy, PIL, scipy, pandas, matplotlib, numba; print('All dependencies installed!')"
@@ -299,7 +146,7 @@ python camera_placement.py
 ### Basic Usage
 
 ```bash
-# Run with default settings (test_4 scenario)
+# Run with default settings (test_4 scenario, 25 cameras)
 python camera_placement.py
 ```
 
@@ -325,32 +172,66 @@ if __name__ == '__main__':
     default_file = "_test_4"  # Change to _test_1, _test_2, etc.
     
     # Camera range in meters
-    camera_range = 15  # Adjust coverage radius
+    camera_range = 15  # Line 95: Adjust coverage radius
 ```
 
 ### Running Different Scenarios
 
 ```bash
-# Test 1: Baseline
-# Edit line 82: default_file = "_test_1"
+# Test 1: Baseline (edit line 82)
+default_file = "_test_1"
 python camera_placement.py
 
 # Test 2: Convolution optimization
-# Edit line 82: default_file = "_test_2"
+default_file = "_test_2"
 python camera_placement.py
 
 # Test 3: Enhanced masking
-# Edit line 82: default_file = "_test_3"
+default_file = "_test_3"
 python camera_placement.py
 
-# Test 4: Bresenham integration (default)
-# Edit line 82: default_file = "_test_4"
+# Test 4: Bresenham integration (default, 25 cameras)
+default_file = "_test_4"
 python camera_placement.py
 
 # Test 5-7: Advanced optimizations
-# Edit line 82: default_file = "_test_5" (or _test_6, _test_7)
+default_file = "_test_5"  # or _test_6, _test_7
 python camera_placement.py
 ```
+
+---
+
+## 🔧 How It Works
+
+### Processing Pipeline
+
+```
+┌─────────────┐     ┌──────────────┐     ┌─────────────────┐
+│  CSV Input  │────▶│ Grid Convert │────▶│ Obstacle Mapping│
+└─────────────┘     └──────────────┘     └─────────────────┘
+                                                   │
+                                                   ▼
+┌─────────────┐     ┌──────────────┐     ┌─────────────────┐
+│Visualization│◀────│   Coverage   │◀────│Camera Placement │
+└─────────────┘     │  Calculation │     └─────────────────┘
+                    └──────────────┘
+```
+
+### Step-by-Step Process
+
+1. **Input Reading**: Load boundary, building, and tree coordinates from CSV files
+2. **Grid Creation**: Convert coordinates to grid-based representation (width × height)
+3. **Obstacle Mapping**: Mark buildings (hard blocks) and trees (soft blocks) on grid
+4. **Camera Loading**: Read pre-calculated camera positions from CSV
+5. **Coverage Calculation**: For each camera:
+   - Cast rays to all grid edges using Bresenham's algorithm
+   - Calculate acceptability score for each visible cell
+   - Account for obstacles and camera range
+6. **Acceptability Scoring**:
+   - `1.0` = Full coverage (clear line-of-sight within range)
+   - `0.5` = Partial coverage (tree obstruction or beyond range)
+   - `0.0` = No coverage (building obstruction or outside boundary)
+7. **Visualization**: Generate color-coded output image
 
 ---
 
@@ -446,6 +327,16 @@ Color-coded coverage map showing:
   - Small circles indicating camera placement
   - Radius proportional to grid size
 
+#### Example Output
+
+![Camera Check Output - Test 4](cameraCheck_test_4.png)
+
+**Interpretation**:
+- Green zones: Areas with clear camera visibility
+- Yellow zones: Areas needing additional coverage
+- Dark green circles: Tree obstacles
+- Magenta dots: 25 optimally placed cameras
+
 #### Console Output
 
 ```
@@ -454,11 +345,12 @@ building read!
 tree read!
 finished one cam
 finished one cam
+finished one cam
 ...
 finished one cam
 ```
 
-Shows progress as each camera's coverage is calculated.
+Shows progress as each camera's coverage is calculated (25 cameras for test_4).
 
 ---
 
@@ -558,24 +450,47 @@ Isolated building shapes extracted from master plan for obstacle processing.
 
 ---
 
+### Progressive Camera Placement
+
+The test directories contain progressive visualizations showing how cameras are added iteratively:
+
+**Initial State (0 cameras)**
+![Test 4 - Initial](test_4/collision/after_0_cameras.png)
+
+- 🔴 Red: Areas needing coverage
+- 🟢 Green: Obstacles (buildings and trees)
+
+**After 10 Cameras**
+![Test 4 - After 10 Cameras](test_4/collision/after_10_cameras.png)
+
+- Coverage expanding as cameras are added
+- Red areas decreasing
+
+**Final State (25 cameras)**
+![Test 4 - Final Result](cameraCheck_test_4.png)
+
+- Comprehensive coverage achieved
+- Minimal blind spots remaining
+
+---
+
 ### Performance Metrics
 
 **Jackfruit Village Results**:
 - **Total Area**: ~800 × 700 grid units
 - **Cameras Deployed**: 25 cameras (test_4 scenario)
-- **Coverage Achieved**: ~92% of designated area
+- **Coverage Achieved**: ~85-92% of designated area
 - **Camera Range**: 15 meters per camera
-- **Optimization**: 6-step iterative refinement
 - **Processing Time**: ~30 seconds on standard hardware
 
 **Coverage Breakdown**:
 - Full coverage (green): 85-90%
-- Partial coverage: 5-7%
+- Partial coverage: 5-10%
 - Blind spots: <5%
 
 ---
 
-## 🔬 Technical Details
+## 🔬 Algorithm Details
 
 ### Core Algorithms
 
@@ -645,7 +560,36 @@ def calculate_acceptability_onALine(pointList, range_of_camera,
 
 ---
 
-#### 3. Grid Filling Algorithm
+#### 3. Camera Placement Function
+
+```python
+def place_camera(camera, width, height, pixelLength_to_meter, camera_range,
+                 data_cell_isInsideBoundary, data_cell_isBuilding, 
+                 data_cell_isTree, data_cell_acceptability):
+    x, y = camera
+    camera_range_as_pixel = camera_range / pixelLength_to_meter
+    
+    # Cast rays to all four edges
+    for i in range(width):
+        point_list = bresenham_fromCenter(x, y, i, 0)
+        calculate_acceptability_onALine(point_list, camera_range_as_pixel, ...)
+    
+    for i in range(height):
+        point_list = bresenham_fromCenter(x, y, width-1, i)
+        calculate_acceptability_onALine(point_list, camera_range_as_pixel, ...)
+    
+    for i in range(width):
+        point_list = bresenham_fromCenter(x, y, i, height-1)
+        calculate_acceptability_onALine(point_list, camera_range_as_pixel, ...)
+    
+    for i in range(height):
+        point_list = bresenham_fromCenter(x, y, 0, i)
+        calculate_acceptability_onALine(point_list, camera_range_as_pixel, ...)
+```
+
+---
+
+#### 4. Grid Filling Algorithm
 **Purpose**: Convert coordinate-based data to grid representation
 
 **Implementation**: `grid_filling.py`
@@ -654,7 +598,7 @@ Transforms CSV coordinates into 2D boolean arrays for efficient processing.
 
 ---
 
-#### 4. Midpoint Circle Algorithm
+#### 5. Midpoint Circle Algorithm
 **Purpose**: Create circular camera coverage masks
 
 **Implementation**: `algo_midpoint.py`
@@ -668,7 +612,7 @@ Generates circular patterns for camera visualization.
 1. **Numba JIT Compilation**: Accelerates grid processing with `@njit` decorators
 2. **Vectorized Operations**: NumPy array operations for efficient computation
 3. **Convolution-Based Analysis**: Uses `scipy.signal` for coverage optimization
-4. **Iterative Refinement**: 6-step progressive optimization process
+4. **Iterative Refinement**: Progressive optimization process across test scenarios
 5. **Grid-Based Processing**: Efficient spatial analysis using discrete grid
 
 ---
@@ -712,23 +656,29 @@ BaoPhuCam/
 │   └── image_properties/               # Grid dimensions
 │       └── img.csv
 ├── 🖼️ Visualization Assets
-│   ├── img/                            # Output images
+│   ├── img/                            # Master plan images
 │   │   ├── BOUNDARY POINTS.png
 │   │   ├── BUILDINGS POINTS.png
 │   │   ├── TREES POINTS.png
 │   │   ├── RESULT.png
 │   │   ├── base_image.png
-│   │   ├── methods_1_2.png
-│   │   ├── methods_3_4.png
-│   │   ├── methods_5_6.png
+│   │   ├── img_base.png
+│   │   ├── img_houses.png
 │   │   ├── range.svg
 │   │   └── obstacle.svg
 │   └── cameraCheck_test_*.png          # Generated outputs
 ├── 🧪 Test Scenarios
 │   ├── test/                           # Test 1: Baseline
+│   │   ├── collision/                  # Progressive camera placement
+│   │   │   ├── after_0_cameras.png
+│   │   │   ├── after_1_cameras.png
+│   │   │   └── ...
+│   │   ├── convolution/
+│   │   ├── min_distance/
+│   │   └── test_camera_distance.png
 │   ├── test_2/                         # Test 2: Convolution
 │   ├── test_3/                         # Test 3: Masking
-│   ├── test_4/                         # Test 4: Bresenham
+│   ├── test_4/                         # Test 4: Bresenham (25 cameras)
 │   ├── test_5/                         # Test 5: Optimization
 │   ├── test_6/                         # Test 6: Validation
 │   └── test_7/                         # Test 7: Production
@@ -757,13 +707,14 @@ The system includes 7 iterative test scenarios demonstrating algorithm evolution
 ### Test Directory Structure
 
 Each test directory contains:
-- `collision/`: Progressive camera placement images (after_0_cameras.png to after_24_cameras.png)
+- `collision/`: Progressive camera placement images
+  - `after_0_cameras.png`: Initial state (no cameras)
+  - `after_1_cameras.png` to `after_24_cameras.png`: Progressive coverage
 - `convolution/`: Convolution analysis results
 - `convolution_bresenham/`: Bresenham-based convolution (test_3+)
 - `convolution_collision/`: Combined analysis
 - `min_distance/`: Distance optimization results
 - `test_camera_distance.png`: Heat map visualization
-- `readme`: Test description (test_2, test_3)
 
 ### Running Tests
 
@@ -771,9 +722,25 @@ Each test directory contains:
 # Edit camera_placement.py line 82
 default_file = "_test_1"  # Run test 1
 default_file = "_test_2"  # Run test 2
+default_file = "_test_3"  # Run test 3
+default_file = "_test_4"  # Run test 4 (default, 25 cameras)
 # ... etc
 
 python camera_placement.py
+```
+
+### Viewing Progressive Results
+
+Each test's `collision/` directory shows how coverage improves as cameras are added:
+
+```bash
+# View progressive results for test_4
+test_4/collision/after_0_cameras.png   # Initial state
+test_4/collision/after_5_cameras.png   # After 5 cameras
+test_4/collision/after_10_cameras.png  # After 10 cameras
+test_4/collision/after_15_cameras.png  # After 15 cameras
+test_4/collision/after_20_cameras.png  # After 20 cameras
+test_4/collision/after_24_cameras.png  # Final state
 ```
 
 ---
@@ -796,7 +763,7 @@ git clone https://github.com/YOUR_USERNAME/BaoPhuCam.git
 cd BaoPhuCam
 
 # Install development dependencies
-pip install -r requirements.txt
+pip install numpy pillow scipy pandas matplotlib numba
 
 # Run tests
 python camera_placement.py
