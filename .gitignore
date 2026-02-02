@@ -41,8 +41,8 @@ venv.bak/
 # Jupyter Notebook
 .ipynb_checkpoints
 
-# Test directories (keep structure but ignore generated content)
-test_*/
+# Test directories - now included in repository for documentation
+# test_*/
 
 # Output files (optional - uncomment if you don't want to track outputs)
 # csv_camera/
