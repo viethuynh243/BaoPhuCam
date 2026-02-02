@@ -143,13 +143,13 @@ The system has been successfully tested on a real-world scenario: the **Jackfrui
 The following images show the step-by-step process and final results of the camera placement optimization for a residential area called "Jackfruit Village".
 
 **Step 1: Boundary Points**
-![Boundary Points - The master plan showing the area boundary (red points) where camera surveillance is needed. The area includes private areas, service areas, meditation spaces, and lake views.](img/BOUNDARY POINTS.png)
+![Boundary Points - The master plan showing the area boundary (red points) where camera surveillance is needed. The area includes private areas, service areas, meditation spaces, and lake views.](img/BOUNDARY%20POINTS.png)
 
 **Step 2: Building Obstacles**
-![Buildings Points - Building obstacles (blue points) mapped onto the master plan. These structures obstruct camera line-of-sight and must be considered in placement calculations.](img/BUILDINGS POINTS.png)
+![Buildings Points - Building obstacles (blue points) mapped onto the master plan. These structures obstruct camera line-of-sight and must be considered in placement calculations.](img/BUILDINGS%20POINTS.png)
 
 **Step 3: Tree Obstacles**
-![Trees Points - Tree obstacles (green points) identified throughout the area. Trees affect camera visibility and coverage zones.](img/TREES POINTS.png)
+![Trees Points - Tree obstacles (green points) identified throughout the area. Trees affect camera visibility and coverage zones.](img/TREES%20POINTS.png)
 
 **Step 4: Final Camera Placement**
 ![Final Camera Placement - Optimized camera positions (red points) with coverage areas (blue points) and tree obstacles (green points). The system minimizes cameras while maximizing area coverage.](img/RESULT.png)
@@ -157,7 +157,7 @@ The following images show the step-by-step process and final results of the came
 ### Detailed Image Analysis
 
 #### 1. Boundary Points Definition
-![Boundary Points](img/BOUNDARY POINTS.png)
+![Boundary Points](img/BOUNDARY%20POINTS.png)
 
 **What it shows:**
 - **Red points**: Define the perimeter of the surveillance area
@@ -174,7 +174,7 @@ The following images show the step-by-step process and final results of the came
 ---
 
 #### 2. Building Obstacles Mapping
-![Buildings Points](img/BUILDINGS POINTS.png)
+![Buildings Points](img/BUILDINGS%20POINTS.png)
 
 **What it shows:**
 - **Blue points**: Represent building structures and permanent obstacles
@@ -189,7 +189,7 @@ The following images show the step-by-step process and final results of the came
 ---
 
 #### 3. Tree Obstacles Identification
-![Trees Points](img/TREES POINTS.png)
+![Trees Points](img/TREES%20POINTS.png)
 
 **What it shows:**
 - **Green points**: Individual tree locations throughout the area
