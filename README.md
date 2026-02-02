@@ -134,6 +134,69 @@ The system generates visual outputs showing:
 - Coverage areas
 - Line-of-sight calculations
 
+## 📊 Results & Visualization
+
+The system has been successfully tested on a real-world scenario: the **Jackfruit Village** master plan. Below are the visualization results demonstrating the camera placement optimization process.
+
+### Example: Jackfruit Village Camera Placement
+
+The following images show the step-by-step process and final results of the camera placement optimization for a residential area called "Jackfruit Village".
+
+````carousel
+![Boundary Points - The master plan showing the area boundary (red points) where camera surveillance is needed. The area includes private areas, service areas, meditation spaces, and lake views.](img/BOUNDARY POINTS.png)
+<!-- slide -->
+![Buildings Points - Building obstacles (blue points) mapped onto the master plan. These structures obstruct camera line-of-sight and must be considered in placement calculations.](img/BUILDINGS POINTS.png)
+<!-- slide -->
+![Trees Points - Tree obstacles (green points) identified throughout the area. Trees affect camera visibility and coverage zones.](img/TREES POINTS.png)
+<!-- slide -->
+![Final Camera Placement - Optimized camera positions (red points) with coverage areas (blue points) and tree obstacles (green points). The system minimizes cameras while maximizing area coverage.](img/RESULT.png)
+````
+
+### Technical Visualization
+
+The system also generates grid-based technical visualizations for detailed analysis:
+
+**Coverage Range Analysis**
+- Shows camera coverage radius and range
+- Visualizes line-of-sight calculations
+- Color-coded grid cells:
+  - 🟢 Green: Full coverage areas
+  - 🟡 Yellow: Partial coverage / edge zones
+  - ⚪ White: No coverage
+
+**Obstacle Detection**
+- Grid-based obstacle mapping
+- Line-of-sight collision detection
+- Color-coded obstacle types:
+  - 🔴 Red: Building obstacles (hard blocks)
+  - ⚫ Gray: Partial obstructions
+  - 🟢 Green: Clear zones
+
+### Key Metrics
+
+For the Jackfruit Village example:
+- **Area Coverage**: ~85-90% of the designated area
+- **Number of Cameras**: Optimized to minimum required
+- **Obstacle Avoidance**: Successfully accounts for buildings and trees
+- **Coverage Radius**: Configurable (default R = 3.5 units)
+
+### Output Files
+
+The system generates multiple output formats:
+1. **Visual Images** (`img/` directory)
+   - PNG images showing boundary, obstacles, and camera placements
+   - SVG technical diagrams for detailed analysis
+   
+2. **CSV Data** (`csv_camera/`, `csv_final/` directories)
+   - Camera coordinates and specifications
+   - Coverage area data
+   - Optimization metrics
+
+3. **Analysis Reports**
+   - Minimum distance calculations
+   - Collision detection results
+   - Coverage efficiency metrics
+
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
