@@ -224,25 +224,95 @@ The following images show the step-by-step process and final results of the came
 4. Minimize blind spots created by buildings and trees
 5. Ensure redundancy for critical zones
 
-### Technical Visualization
+### Additional Camera Placement Visualizations
 
-The system also generates grid-based technical visualizations for detailed analysis:
+#### Base Image with Camera Coverage Overlay
+![Base Image with Cameras](img/base_image.png)
 
-**Coverage Range Analysis**
-- Shows camera coverage radius and range
-- Visualizes line-of-sight calculations
-- Color-coded grid cells:
-  - 🟢 Green: Full coverage areas
-  - 🟡 Yellow: Partial coverage / edge zones
-  - ⚪ White: No coverage
+**What it shows:**
+- **Aerial/satellite view**: Real-world ground plan of Jackfruit Village
+- **Green circles**: Camera coverage zones overlaid on actual terrain
+- **Pink/Magenta boundary**: Surveillance area perimeter
+- **Scale reference**: Shows coverage radius of ~25m per camera
 
-**Obstacle Detection**
-- Grid-based obstacle mapping
-- Line-of-sight collision detection
-- Color-coded obstacle types:
-  - 🔴 Red: Building obstacles (hard blocks)
+**Purpose**: Demonstrates how the theoretical camera placement translates to real-world coverage. This visualization helps stakeholders understand the actual physical coverage areas on the ground.
+
+**Key insights:**
+- Coverage zones overlap for redundancy
+- Strategic placement covers all pathways and entry points
+- Natural terrain and existing structures are considered
+- Scale-accurate representation for deployment planning
+
+---
+
+#### Master Plan Reference
+![Master Plan Base](img/img_base.png)
+
+**What it shows:**
+- Clean master plan layout without camera overlay
+- Zone designations and labels
+- Building footprints and landscaping
+- Pathways and circulation routes
+
+**Purpose**: Reference image showing the original master plan used as input for the camera placement algorithm.
+
+---
+
+#### Building Footprints Extraction
+![Building Houses](img/img_houses.png)
+
+**What it shows:**
+- Isolated building footprints extracted from the master plan
+- Individual structure shapes and orientations
+- Building distribution pattern
+
+**Purpose**: Shows the obstacle extraction process where building shapes are identified and converted to coordinate data for the algorithm to process.
+
+---
+
+#### Technical Grid Visualizations
+
+The system generates SVG-based grid visualizations for algorithm analysis:
+
+**Coverage Range Grid** ([range.svg](img/range.svg))
+- Grid-based representation of camera coverage
+- Shows radius calculations (R = 3.5 units)
+- Color-coded cells:
+  - 🟢 Green: Within camera range
+  - 🟡 Yellow: Edge of coverage zone
+  - ⚪ White: Outside coverage
+- Displays line-of-sight calculations from camera position
+
+**Obstacle Detection Grid** ([obstacle.svg](img/obstacle.svg))
+- Grid representation of obstacles
+- Shows collision detection results
+- Color coding:
+  - 🔴 Red: Building obstacles (camera cannot see through)
   - ⚫ Gray: Partial obstructions
-  - 🟢 Green: Clear zones
+  - 🟢 Green: Clear zones (camera has line-of-sight)
+  - 🔵 Blue: Line-of-sight rays from camera
+- Demonstrates Bresenham's line algorithm in action
+
+---
+
+### Test Results and Validation
+
+#### Camera Distance Optimization Test
+![Camera Distance Test](test/test_camera_distance.png)
+
+**What it shows:**
+- **Red background**: Test area
+- **Yellow/Green markers**: Optimal camera spacing calculations
+- **Heat map visualization**: Distance-based coverage analysis
+
+**Purpose**: Validates the minimum distance calculation algorithm that ensures cameras are optimally spaced to avoid redundancy while maintaining coverage.
+
+**Test results:**
+- ✅ Minimum distance constraints satisfied
+- ✅ No camera overlap in non-critical zones
+- ✅ Optimal spacing achieved for cost-efficiency
+
+---
 
 ### Key Metrics
 
